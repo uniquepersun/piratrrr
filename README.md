@@ -16,6 +16,9 @@ some SSs for you!
 ## Secrets
 you'll need some secrets, for which you need to ask slack [here](https://api.slack.com/apps) and that `bot token` you need put in a (dot)env file like [this](https://github.com/uniquepersun/piratrrr/blob/main/dotenv.txt)  
 
+### wanna drop any suggestion or contribute
+go for it!! whether create a [issue](https://github.com/uniquepersun/piratrrr/issues/new) or [fork](https://github.com/uniquepersun/piratrrr/fork) it and make a pr :hammer_and_wrench:
+
 **also thanks to [@sayhan1610](https://github.com/sayhan1610/) guy for his [site](https://pirater.onrender.com/) and api which inspired me to work on this bot**
 
 ## :wink: wanna have some talk?! :v::heart:
