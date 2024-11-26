@@ -1,5 +1,5 @@
 from slack_sdk import WebClient
-from flask import Request, Flask, jsonify, Response, request
+from flask import Flask, Response, request
 import requests
 from slack_sdk.errors import SlackApiError
 from dotenv import load_dotenv
@@ -19,27 +19,26 @@ def translate(msg):
         return(response.json()["pirate_translation"])
     else:
         print("thar be a error in translating;", response.status_code, response.text)
+        return("thar be a error in translating;", response.status_code, response.text)
 
 @app.route('/pirate', methods=['POST'])
 def slash():
     data = request.form
-    print(data) # TODO: remove this print later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     userid = data.get('user_id')
     message = data.get('text')
     channelid = data.get('channel_id')
-    threadts = data.get('thread_ts')
     userinfo = client.users_info(user=userid)
-    realname = userinfo['user']['real_name']
+    userpictureurl = userinfo['user']['profile']['image_48']
     username = data.get('user_name')
-    userpicture = userinfo['user']['profile']['image_192']
-    translatedmessage = translate(message)
-    message = f"{username}({realname}) says: {translatedmessage}"
+    message = translate(message)
 
     try:
         client.chat_postMessage(
             channel=channelid,
             text=message,
-            thread_ts=threadts
+            username=username,
+            icon_url=userpictureurl
+
         )
 
     except SlackApiError as e:
