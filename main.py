@@ -24,6 +24,27 @@ def translate(msg):
 def slash():
     data = request.form
     print(data) # TODO: remove this print later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    userid = data.get('user_id')
+    message = data.get('text')
+    channelid = data.get('channel_id')
+    threadts = data.get('thread_ts')
+    userinfo = client.users_info(user=userid)
+    realname = userinfo['user']['real_name']
+    username = data.get('user_name')
+    userpicture = userinfo['user']['profile']['image_192']
+    translatedmessage = translate(message)
+    message = f"{username}({realname}) says: {translatedmessage}"
+
+    try:
+        client.chat_postMessage(
+            channel=channelid,
+            text=message,
+            thread_ts=threadts
+        )
+
+    except SlackApiError as e:
+        print(f"ERROR:{e.response['error']}")
+
     return Response(), 200
     
 if __name__ == "__main__":
