@@ -28,15 +28,16 @@ def slash():
     message = data.get('text')
     channelid = data.get('channel_id')
     userinfo = client.users_info(user=userid)
-    userpictureurl = userinfo['user']['profile']['image_48']
+    userpictureurl = userinfo['user']['profile']['image_192']
     username = data.get('user_name')
+    displayname = userinfo['user']['profile']['display_name']
     message = translate(message)
 
     try:
         client.chat_postMessage(
             channel=channelid,
             text=message,
-            username=username,
+            username=displayname,
             icon_url=userpictureurl
 
         )
