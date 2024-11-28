@@ -22,7 +22,8 @@ def translate(msg):
         return("thar be a error in translating;", response.status_code, response.text)
 
 @app.route('/pirate', methods=['POST'])
-def slash():
+def slash(ack):
+    ack()
     data = request.form
     userid = data.get('user_id')
     message = data.get('text')
