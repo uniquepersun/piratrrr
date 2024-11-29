@@ -32,7 +32,6 @@ def slashpirate(ack, body, client):
             user_info = response['user']
             displayname = user_info['profile'].get('display_name')
             pfp = user_info['profile'].get('image_192')
-            print(user_info)
         else:
             print("errr fetching user info ", response['error'])
     
@@ -40,7 +39,6 @@ def slashpirate(ack, body, client):
         print("error fetching userinfo:", e)
     
     channelid = body.get("channel_id")
-    print(body)
     pirate_message = translate(usermessage)
     client.chat_postMessage(
         channel=channelid,
