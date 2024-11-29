@@ -1,5 +1,5 @@
 ## if you are from HackClub,
-Just run `/pirate <message>` and see the magic..
+Just run `/pirate <message>` and see the magic(demo in this case)..
 
 **If you are not from HC why???? okay you can see these SS and the README.md of this repo and use it in your own workspace..**
 

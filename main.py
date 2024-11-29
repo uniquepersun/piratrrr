@@ -1,15 +1,14 @@
-from slack_sdk import WebClient
-from flask import Flask, Response, request
-import requests
-from slack_sdk.errors import SlackApiError
-from dotenv import load_dotenv
+from slack_bolt import App
 import os
+from dotenv import load_dotenv
+import requests
 
 load_dotenv()
-app = Flask(__name__)
-slack_bot_token=os.environ.get("SLACK_BOT_TOKEN")
-client = WebClient(slack_bot_token)
+app = App(
+    token=os.environ.get("SLACK_BOT_TOKEN"),
+    signing_secret=os.environ.get("SLACK_SIGNING_SECRET")
 
+)
 def translate(msg):
     url = "https://pirater-api.onrender.com/translate/"
     data = {"text": f"${msg}"}
@@ -18,35 +17,34 @@ def translate(msg):
     if response.status_code == 200:
         return(response.json()["pirate_translation"])
     else:
-        print("thar be a error in translating;", response.status_code, response.text)
-        return("thar be a error in translating;", response.status_code, response.text)
+        print("thar be a error in translating; ", response.status_code, response.text)
+        return("thar be a error in translating; ", response.status_code, response.text)
 
-@app.route('/pirate', methods=['POST'])
-def slash(ack):
+@app.command("/pirate")
+def slashpirate(ack, body, client):
     ack()
-    data = request.form
-    userid = data.get('user_id')
-    message = data.get('text')
-    channelid = data.get('channel_id')
-    userinfo = client.users_info(user=userid)
-    userpictureurl = userinfo['user']['profile']['image_192']
-    username = data.get('user_name')
-    displayname = userinfo['user']['profile']['display_name']
-    message = translate(message)
-
-    try:
-        client.chat_postMessage(
-            channel=channelid,
-            text=message,
-            username=displayname,
-            icon_url=userpictureurl
-
-        )
-
-    except SlackApiError as e:
-        print(f"ERROR:{e.response['error']}")
-
-    return Response(), 200
+    usermessage = body.get("text","")
+    userid = body.get("user_id")
     
-if __name__ == "__main__":
-    app.run(port=3000)
+    try:
+        response = client.users_info(user=userid)
+        if response['ok']:
+            user_info = response['user']
+            displayname = user_info['profile'].get('display_name')
+            pfp = user_info['profile'].get('image_192')
+            print(user_info)
+        else:
+            print("errr fetching user info ", response['error'])
+    
+    except Exception as e:
+        print("error fetching userinfo:", e)
+    
+    channelid = body.get("channel_id")
+    print(body)
+    pirate_message = translate(usermessage)
+    client.chat_postMessage(
+        channel=channelid,
+        username=displayname,
+        text=pirate_message,
+        icon_url=pfp
+    )
