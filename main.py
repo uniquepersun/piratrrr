@@ -29,7 +29,7 @@ def emojify(msg):
         emoji.append(match.group())
         return "{}"
 
-    extracted = re.sub(r':.*?:', replace_emoji, msg)
+    extracted = re.sub(r'(:.*?:|@\S+)', replace_emoji, msg) 
     translated = translate(extracted)
     emojified = translated.format(*emoji)
 # the translating api is sending it with a '$' sign in starting..
