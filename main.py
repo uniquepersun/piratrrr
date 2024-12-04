@@ -2,6 +2,8 @@ from slack_bolt import App
 import os
 from dotenv import load_dotenv
 import requests
+import re
+
 
 load_dotenv()
 app = App(
@@ -19,6 +21,24 @@ def translate(msg):
     else:
         print("thar be a error in translating; ", response.status_code, response.text)
         return("thar be a error in translating; ", response.status_code, response.text)
+
+def emojify(msg):
+    emoji = []
+
+    def replace_emoji(match):
+        emoji.append(match.group())
+        return "{}"
+
+    extracted = re.sub(r':.*?:', replace_emoji, msg)
+    translated = translate(extracted)
+    emojified = translated.format(*emoji)
+# the translating api is sending it with a '$' sign in starting..
+    def removedollar(emojified):
+        return emojified[1:]
+    
+    return removedollar(emojified)
+
+
 
 @app.command("/pirate")
 def slashpirate(ack, body, client):
@@ -39,7 +59,7 @@ def slashpirate(ack, body, client):
         print("error fetching userinfo:", e)
     
     channelid = body.get("channel_id")
-    pirate_message = translate(usermessage)
+    pirate_message = emojify(usermessage)
     client.chat_postMessage(
         channel=channelid,
         username=displayname,

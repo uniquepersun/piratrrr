@@ -26,4 +26,4 @@ Find `uniquepersun` all over the web! 🕸️
 
 - [X](https://x.com/uniquepersun) (I like to call it ***twitter***) <br>
 - [instagram](https://instagram.com/uniquepersun) <br>
-- OR start [this repo]() **OR** sponser **this** github [profile](https://github.com/uniquepersun) :smile:
+- OR star [this repo]() **OR** sponser **this** github [profile](https://github.com/uniquepersun) :smile:
