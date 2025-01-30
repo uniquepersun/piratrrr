@@ -15,7 +15,7 @@ def translate(msg):
     url = "https://pirater-api.onrender.com/translate/"
     data = {"text": f"${msg}"}
     response = requests.post(url, json=data)
-
+ 
     if response.status_code == 200:
         return(response.json()["pirate_translation"])
     else:
@@ -24,21 +24,21 @@ def translate(msg):
 
 def emojify(msg):
     emoji = []
-
+ 
     def replace_emoji(match):
         emoji.append(match.group())
         return "{}"
 
-    extracted = re.sub(r'(:.*?:|@\S+)', replace_emoji, msg) 
+    extracted = re.sub(r'(:.*?:|@\S+)', replace_emoji, msg)
     translated = translate(extracted)
     emojified = translated.format(*emoji)
 # the translating api is sending it with a '$' sign in starting..
     def removedollar(emojified):
         return emojified[1:]
-    
+
     return removedollar(emojified)
-
-
+                    
+                            
 
 @app.command("/pirate")
 def slashpirate(ack, body, client):

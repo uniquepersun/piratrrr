@@ -2,4 +2,4 @@ SLACK_BOT_TOKEN=xoxb-not-a-real-token-this-will-not-work
 SLACK_SIGNING_SECRET=notarealsigningsecret
 
 
-NOTE: do not add quotes or smth :bye:
+NOTE(for me): do not add quotes or smth :bye:
